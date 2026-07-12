@@ -1,0 +1,53 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-dot"></span>
+    <span>NetSuite Console</span>
+  </div>
+
+  <nav class="nav-group">
+    <a class="nav-link {{ 'active' if active == 'dashboard' else '' }}" href="{{ url_for('dashboard') }}">
+      <span class="ic">&#9679;</span> Dashboard
+    </a>
+    <a class="nav-link {{ 'active' if active == 'upload' else '' }}" href="{{ url_for('upload_page') }}">
+      <span class="ic">&#8593;</span> Upload File (TCP)
+    </a>
+    <a class="nav-link {{ 'active' if active == 'stream' else '' }}" href="{{ url_for('stream_page') }}">
+      <span class="ic">&#9654;</span> Streaming Video (UDP)
+    </a>
+  </nav>
+
+  <div class="status-block">
+    <h4>Status Server</h4>
+    <div class="status-row"><span><span class="status-dot" id="dot-tcp"></span>TCP :5001</span> <span id="txt-tcp">memeriksa…</span></div>
+    <div class="status-row"><span><span class="status-dot" id="dot-udp"></span>UDP :5002</span> <span id="txt-udp">menunggu frame</span></div>
+  </div>
+
+  <div class="user-chip">
+    <span>{{ session.get('username', '') }}</span>
+    <a href="{{ url_for('logout') }}">Keluar</a>
+  </div>
+</aside>
+
+<script>
+  // Cek status server TCP/UDP secara berkala lewat /api/status
+  async function refreshStatus() {
+    try {
+      const res = await fetch("{{ url_for('api_status') }}");
+      const data = await res.json();
+      const dotTcp = document.getElementById('dot-tcp');
+      const txtTcp = document.getElementById('txt-tcp');
+      const dotUdp = document.getElementById('dot-udp');
+      const txtUdp = document.getElementById('txt-udp');
+      if (dotTcp) {
+        dotTcp.className = 'status-dot ' + (data.tcp_online ? 'up' : 'down');
+        txtTcp.textContent = data.tcp_online ? 'online' : 'offline';
+      }
+      if (dotUdp) {
+        dotUdp.className = 'status-dot ' + (data.udp_receiving ? 'up' : 'down');
+        txtUdp.textContent = data.udp_receiving ? 'menerima frame' : 'tidak ada stream';
+      }
+    } catch (e) { /* diam-diam gagal, tidak mengganggu UI */ }
+  }
+  refreshStatus();
+  setInterval(refreshStatus, 4000);
+</script>

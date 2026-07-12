@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk — NetSuite Console</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  {% include "_flash.html" %}
+  <div class="auth-shell">
+    <div class="auth-card">
+      <div class="auth-brand"><span class="brand-dot"></span><span>NetSuite Console</span></div>
+      <h1 class="auth-title">Masuk ke akun</h1>
+      <p class="auth-sub">Login akan diverifikasi lewat kode yang dikirim ke email Anda.</p>
+
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn" type="submit">Masuk &amp; kirim kode verifikasi</button>
+      </form>
+
+      <p class="auth-foot">Belum punya akun? <a href="{{ url_for('register') }}">Daftar di sini</a></p>
+    </div>
+  </div>
+</body>
+</html>

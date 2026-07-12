@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Streaming — NetSuite Console</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  {% include "_flash.html" %}
+  <div class="app-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="main">
+      <div class="page-head">
+        <div class="eyebrow">Protokol UDP</div>
+        <h1 class="page-title">Streaming video</h1>
+        <p class="page-desc"><code>udp_server.py</code> membaca video, meng-encode tiap frame ke JPEG, lalu mengirimnya sebagai datagram UDP ke aplikasi ini. Karena browser tidak bisa membaca socket UDP langsung, frame ditayangkan ulang sebagai MJPEG.</p>
+      </div>
+
+      <div class="panel">
+        <h3><span class="badge badge-udp">UDP</span> Pilih video</h3>
+        <div class="video-select" id="video-select">
+          {% for v in videos %}
+            <div class="video-chip" data-video="{{ v }}">{{ v }}</div>
+          {% else %}
+            <div class="empty-state" style="width:100%">Belum ada video di folder <code>videos/</code>.</div>
+          {% endfor %}
+        </div>
+        <button class="btn btn-sm" id="start-btn" style="width:auto" disabled>Mulai streaming via UDP</button>
+      </div>
+
+      <div class="panel">
+        <h3>Preview</h3>
+        <div class="player-frame" id="player-frame">
+          <span class="live-tag" id="live-tag"><span class="live-dot"></span>LIVE · UDP</span>
+          <div class="player-placeholder" id="placeholder">Pilih video lalu klik "Mulai streaming"</div>
+        </div>
+        <p class="help-note">Pastikan <code>udp_server.py</code> sudah berjalan (control port 5003). Jika tidak ada frame masuk dalam beberapa detik, cek apakah server UDP aktif dan path video benar.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/stream.js') }}"></script>
+</body>
+</html>

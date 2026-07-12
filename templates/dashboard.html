@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — NetSuite Console</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  {% include "_flash.html" %}
+  <div class="app-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="main">
+      <div class="page-head">
+        <div class="eyebrow">Ringkasan sistem</div>
+        <h1 class="page-title">Selamat datang, {{ session.get('username') }}</h1>
+        <p class="page-desc">Dua jalur protokol berjalan di belakang layar: upload berkas lewat <b>TCP</b> yang andal, dan streaming video lewat <b>UDP</b> yang cepat tanpa jaminan urutan paket.</p>
+        <div class="packet-track"><span></span><span></span><span></span></div>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card">
+          <span class="badge badge-tcp">TCP · UPLOAD</span>
+          <div class="stat">{{ files|length }}</div>
+          <p>berkas tersimpan di server</p>
+        </div>
+        <div class="card">
+          <span class="badge badge-udp">UDP · STREAM</span>
+          <div class="stat">{{ videos|length }}</div>
+          <p>video siap distreaming</p>
+        </div>
+        <div class="card">
+          <h3>Upload berkas</h3>
+          <p>Kirim file ke server via socket TCP kustom.</p>
+          <br>
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('upload_page') }}">Buka halaman upload &rarr;</a>
+        </div>
+        <div class="card">
+          <h3>Streaming video</h3>
+          <p>Mulai stream frame video via socket UDP kustom.</p>
+          <br>
+          <a class="btn btn-sm btn-ghost" href="{{ url_for('stream_page') }}">Buka halaman stream &rarr;</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

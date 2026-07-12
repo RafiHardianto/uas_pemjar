@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload — NetSuite Console</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  {% include "_flash.html" %}
+  <div class="app-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="main">
+      <div class="page-head">
+        <div class="eyebrow">Protokol TCP</div>
+        <h1 class="page-title">Upload berkas</h1>
+        <p class="page-desc">Berkas dikirim dari browser ke aplikasi Flask, lalu diteruskan ke <code>tcp_server.py</code> melalui koneksi socket TCP murni sebelum disimpan ke folder <code>uploads/</code>.</p>
+      </div>
+
+      <div class="panel">
+        <h3><span class="badge badge-tcp">TCP</span> Kirim berkas baru</h3>
+
+        <form id="upload-form">
+          <label class="dropzone" id="dropzone">
+            <div class="dz-icon">&#8593;</div>
+            <div class="dz-main">Klik untuk pilih berkas, atau seret ke sini</div>
+            <div class="dz-sub" id="dz-filename">Belum ada berkas dipilih</div>
+            <input type="file" id="file-input" name="file">
+          </label>
+
+          <div class="progress-wrap" id="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            <div class="progress-label" id="progress-label">0%</div>
+          </div>
+
+          <br>
+          <button class="btn" type="submit" id="upload-btn" disabled>Upload via TCP</button>
+        </form>
+        <p class="help-note">Pastikan <code>tcp_server.py</code> sudah berjalan di server (port 5001), kalau belum, upload akan gagal dengan pesan error yang jelas.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Berkas tersimpan</h3>
+        <div class="file-list">
+          {% for f in files %}
+            <div class="file-row">
+              <span class="fname">&#128196; {{ f }}</span>
+              <a class="dl" href="{{ url_for('download_file', filename=f) }}">Unduh</a>
+            </div>
+          {% else %}
+            <div class="empty-state">Belum ada berkas yang diupload.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+</body>
+</html>
